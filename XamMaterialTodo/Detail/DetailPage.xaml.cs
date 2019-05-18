@@ -18,11 +18,6 @@ namespace XamMaterialTodo.Detail
             viewModel = new DetailPageViewModel(todoUsecase, item);
             this.BindingContext = viewModel;
 
-            viewModel.ActionLabel.Subscribe(x =>
-            {
-                toolBarItem.Text = x;
-            });
-
             viewModel.ClosePageRequest.Subscribe(async _ => 
             {
                 await this.Navigation.PopAsync();

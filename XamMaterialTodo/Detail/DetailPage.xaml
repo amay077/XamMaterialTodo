@@ -6,45 +6,60 @@
     Title="{Binding Title.Value}">
     
     <ContentPage.ToolbarItems> 
-        <ToolbarItem x:Name="toolBarItem" Command="{Binding ToggleDoneCommand}" />
     </ContentPage.ToolbarItems>
     
     <ContentPage.Content>
-        <StackLayout
-            Orientation="Vertical"
-            VerticalOptions="FillAndExpand"
-            HorizontalOptions="FillAndExpand">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="100" />
+            </Grid.RowDefinitions>
             
-            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                <Entry Placeholder="Title" Text="{Binding Title.Value, Mode=TwoWay}" HorizontalOptions="FillAndExpand"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>   
+            
+        
+            <StackLayout Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2"
+                Orientation="Vertical"
+                VerticalOptions="FillAndExpand"
+                HorizontalOptions="FillAndExpand">
+                
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Entry Placeholder="Title" Text="{Binding Title.Value, Mode=TwoWay}" HorizontalOptions="FillAndExpand"/>
+                </StackLayout>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackLayout Grid.Column="0" Orientation="Horizontal">
+                        <Switch IsToggled="{Binding IsDueDateEnabled.Value}" />
+                        <DatePicker Date="{Binding DueDate.Value, Mode=TwoWay}" IsEnabled="{Binding IsDueDateEnabled.Value}" />
+                    </StackLayout>
+                    
+                    <StackLayout Grid.Column="1" Orientation="Horizontal" VerticalOptions="Center">
+                        <Label Text="Low" />
+                        <Slider Minimum="0" Maximum="4" Value="{Binding Priority.Value}"  HorizontalOptions="FillAndExpand" />    
+                        <Label Text="High" />
+                    </StackLayout>
+                </Grid>
+                
+                <Editor Placeholder="Description" Text="{Binding Description.Value, Mode=TwoWay}" VerticalOptions="FillAndExpand"></Editor>
+                
             </StackLayout>
             
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
+            <ImageButton Grid.Column="1" Grid.Row="1"
+                Source="https://raw.githubusercontent.com/amay077/XamMaterialTodo/master/img/sharp_done_white_48dp.png"
+                BorderWidth="0.15" BackgroundColor="#2B78FE" BorderColor="Gray" 
+                Padding="10" CornerRadius="40" 
+                WidthRequest="50" HeightRequest="50"  
+                VerticalOptions="Center" HorizontalOptions="Center"
+                Command="{Binding DoneCommand}"/>
                 
-                <StackLayout Grid.Column="0" Orientation="Horizontal">
-                    <Switch IsToggled="{Binding IsDueDateEnabled.Value}" />
-                    <DatePicker Date="{Binding DueDate.Value, Mode=TwoWay}" IsEnabled="{Binding IsDueDateEnabled.Value}" />
-                </StackLayout>
-                
-                <StackLayout Grid.Column="1" Orientation="Horizontal" VerticalOptions="Center">
-                    <Label Text="Low" />
-                    <Slider Minimum="0" Maximum="4" Value="{Binding Priority.Value}"  HorizontalOptions="FillAndExpand" />    
-                    <Label Text="High" />
-                </StackLayout>
-                
-                
-                
-            </Grid>
-            
-            
-            
-            
-            <Editor Placeholder="Description" Text="{Binding Description.Value, Mode=TwoWay}" VerticalOptions="FillAndExpand"></Editor>
-            
-        </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

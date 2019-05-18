@@ -21,7 +21,7 @@ namespace XamMaterialTodo.Detail
         public ReadOnlyReactiveProperty<TodoItem> UpdatedItem { get; }
 
 
-        public ReactiveCommand ToggleDoneCommand { get; } = new ReactiveCommand();
+        public ReactiveCommand DoneCommand { get; } = new ReactiveCommand();
 
         private readonly ReactiveProperty<Unit> closePageRequestInner = new ReactiveProperty<Unit>(mode: ReactivePropertyMode.None);
         public ReadOnlyReactiveProperty<Unit> ClosePageRequest { get; }
@@ -34,7 +34,6 @@ namespace XamMaterialTodo.Detail
             Description = new ReactiveProperty<string>(item.Description);
             IsCompleted = new ReactiveProperty<bool>(item.IsCompleted);
             Priority = new ReactiveProperty<int>(item.Priority);
-            ActionLabel = IsCompleted.Select(x => x ? "Undone" : "Done").ToReadOnlyReactiveProperty();
 
             ClosePageRequest = closePageRequestInner.ToReadOnlyReactiveProperty();
 
@@ -52,19 +51,11 @@ namespace XamMaterialTodo.Detail
                 await todoUsecase.Update(x);
             }).AddTo(disposables);
 
-            ToggleDoneCommand.Subscribe(async _ => 
+            DoneCommand.Subscribe(async _ => 
             {
-                if (IsCompleted.Value)
-                {
-                    await todoUsecase.Undone(UpdatedItem.Value);
-                    IsCompleted.Value = false;
-                }
-                else
-                {
-                    await todoUsecase.Done(UpdatedItem.Value);
-                    IsCompleted.Value = true;
-                    closePageRequestInner.Value = Unit.Default;
-                }
+                await todoUsecase.Done(UpdatedItem.Value);
+                IsCompleted.Value = true;
+                closePageRequestInner.Value = Unit.Default;
             });
         }
 
