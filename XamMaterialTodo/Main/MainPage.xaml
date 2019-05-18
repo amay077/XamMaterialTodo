@@ -5,7 +5,8 @@
     xmlns:local="clr-namespace:XamMaterialTodo.Main" 
     xmlns:app="clr-namespace:XamMaterialTodo" 
     x:Class="XamMaterialTodo.Main.MainPage"
-    Title="TODO List">
+    Title="TODO List"
+    x:Name="page">
     
     <ContentPage.ToolbarItems> 
         <ToolbarItem x:Name="toolBarItem" Command="{Binding ToggleShowCompletedCommand}" />
@@ -24,10 +25,20 @@
             </Grid.ColumnDefinitions>   
                     
             <ListView Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" 
-                      x:Name="listView" ItemsSource="{Binding TodoItems}" SelectionMode="None" ItemTapped="ListView_ItemTapped" >
+                      x:Name="listView" ItemsSource="{Binding TodoItems}" SelectionMode="None"
+                      ItemTapped="ListView_ItemTapped" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem IsEnabled="{Binding IsCompleted}" Text="Undone"
+                                          Command="{Binding BindingContext.UndoneCommand, Source={x:Reference page}}" 
+                                          CommandParameter="{Binding}" />
+
+                                <MenuItem Text="Delete" 
+                                          Clicked="DeleteMenu_Clicked" 
+                                          CommandParameter="{Binding}" />
+                            </ViewCell.ContextActions>
                             <StackLayout
                                 HorizontalOptions="FillAndExpand"
                                 Orientation="Horizontal">

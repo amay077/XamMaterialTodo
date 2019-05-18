@@ -16,7 +16,7 @@ namespace XamMaterialTodo
         {
             InitializeComponent();
 
-            todoUsecase = new TodoUsecase(new LiteDBTodoRepository());
+            todoUsecase = new TodoUsecase(new LiteDbTodoRepository());
             MainPage = new NavigationPage(new MainPage(todoUsecase));
         }
 

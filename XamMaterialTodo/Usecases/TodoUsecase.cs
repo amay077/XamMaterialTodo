@@ -12,30 +12,34 @@ namespace XamMaterialTodo.Usecases
 {
     public sealed class TodoUsecase
     {
-        private readonly LiteDBTodoRepository todoRepository;
+        private readonly ITodoRepository todoRepository;
 
         private ReactiveCollection<TodoItem> TodoItemsInternal { get; } = new ReactiveCollection<TodoItem>();
         public ReadOnlyReactiveCollection<TodoItem> TodoItems { get; }
 
-        private ReactiveProperty<bool> IsVisibleCompletedInternal { get; } = new ReactiveProperty<bool>(false);
+        private ReactiveProperty<bool> IsVisibleCompletedInternal { get; } = new ReactiveProperty<bool>(true);
         public ReadOnlyReactiveProperty<bool> IsVisibleCompleted { get; }
 
-        public TodoUsecase(LiteDBTodoRepository todoRepository)
+        public TodoUsecase(ITodoRepository todoRepository)
         {
             this.todoRepository = todoRepository;
-
 
             IsVisibleCompleted = IsVisibleCompletedInternal.ToReadOnlyReactiveProperty();
             TodoItems = TodoItemsInternal.ToReadOnlyReactiveCollection();
         }
 
-        public void ToggleShowCompleted()
+        public async Task ToggleShowCompleted()
         {
             IsVisibleCompletedInternal.Value = !IsVisibleCompletedInternal.Value;
-            LoadItems();
+            await LoadItemsInternal();
         }
 
         public async Task LoadItems()
+        {
+            await LoadItemsInternal();
+        }
+
+        private async Task LoadItemsInternal()
         {
             var items = await todoRepository.ReadAll(IsVisibleCompleted.Value);
             TodoItemsInternal.Clear();
@@ -47,18 +51,22 @@ namespace XamMaterialTodo.Usecases
 
         public async Task<TodoItem> Add()
         {
-            var newItem = new TodoItem(DateTime.Now.Ticks.ToString(), string.Empty, false, string.Empty, 0, null);
+            var newItem = new TodoItem(DateTime.Now.Ticks.ToString(), string.Empty, false, string.Empty, 0, null, DateTimeOffset.Now);
             await todoRepository.Add(newItem);
-            LoadItems();
+            await LoadItemsInternal();
             return newItem;
         }
 
         public async Task Update(TodoItem item)
         {
             await todoRepository.Update(item);
-            //var hit = TodoItemsInternal.Select((todo, index) => (todo, index)).FirstOrDefault(x => x.todo.Id == item.Id);
-            //TodoItemsInternal[hit.index] = item;
-            LoadItems();
+            await LoadItemsInternal();
+        }
+
+        public async Task Delete(TodoItem item)
+        {
+            await todoRepository.Delete(item);
+            await LoadItemsInternal();
         }
 
         public async Task Done(TodoItem item)

@@ -1,32 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using LiteDB;
 using XamMaterialTodo.DataModels;
 
 namespace XamMaterialTodo.Repositories
 {
-    public class LiteDBTodoRepository
+    public sealed class LiteDbTodoRepository : ITodoRepository
     {
-        private readonly IList<TodoItem> source = new List<TodoItem>();
+        private readonly string dataBasePath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.Personal), "todo.litedb");
 
-        public LiteDBTodoRepository()
+        public Task<IEnumerable<TodoItem>> ReadAll(bool containsCompleted)
         {
-            source.Add(new TodoItem("id1", "title1", true, "desc1", 1, DateTimeOffset.Now + TimeSpan.FromDays(5)));
-            source.Add(new TodoItem("id2", "title2", false, "desc2", 2, null));
-        }
-
-        public async Task<IEnumerable<TodoItem>> ReadAll(bool containsCompleted)
-        {
-            return source.Where(x => containsCompleted ? true : !x.IsCompleted);
+            return Task.Factory.StartNew<IEnumerable<TodoItem>>(() => 
+            {
+                using (var db = new LiteDatabase(dataBasePath))
+                {
+                    var items = db.GetCollection<TodoItem>();
+                    return items.FindAll()
+                        .Where(x => containsCompleted ? true : !x.IsCompleted)
+                        .OrderByDescending(x => x.Priority)
+                        .ThenByDescending(x => x.CreateDate);
+                }
+            });
         }
 
         public Task Update(TodoItem item)
         {
             return Task.Factory.StartNew(() =>
             {
-                var hit = source.Select((todo, index) => (todo, index)).FirstOrDefault(x => x.todo.Id == item.Id);
-                source[hit.index] = item;
+                using (var db = new LiteDatabase(dataBasePath))
+                {
+                    var items = db.GetCollection<TodoItem>();
+                    items.Update(item.Id, item);
+                }
             });
         }
 
@@ -34,7 +44,23 @@ namespace XamMaterialTodo.Repositories
         {
             return Task.Factory.StartNew(() =>
             {
-                source.Add(item);
+                using (var db = new LiteDatabase(dataBasePath))
+                {
+                    var items = db.GetCollection<TodoItem>();
+                    items.Insert(item.Id, item);
+                }
+            });
+        }
+
+        public Task Delete(TodoItem item)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                using (var db = new LiteDatabase(dataBasePath))
+                {
+                    var items = db.GetCollection<TodoItem>();
+                    items.Delete(item.Id);
+                }
             });
         }
     }

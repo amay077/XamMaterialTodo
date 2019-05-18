@@ -19,13 +19,14 @@ namespace XamMaterialTodo.Main
     public partial class MainPage : ContentPage
     {
         private readonly TodoUsecase todoUsecase;
+        private readonly MainPageViewModel viewModel;
 
         public MainPage(TodoUsecase todoUsecase)
         {
             this.todoUsecase = todoUsecase;
             InitializeComponent();
 
-            var viewModel = new MainPageViewModel(todoUsecase);
+            viewModel = new MainPageViewModel(todoUsecase);
             this.BindingContext = viewModel;
 
             viewModel.FilterLabel.Subscribe(x => 
@@ -43,6 +44,18 @@ namespace XamMaterialTodo.Main
         async void ListView_ItemTapped(object sender, Xamarin.Forms.ItemTappedEventArgs e)
         {
             await this.Navigation.PushAsync(new DetailPage(todoUsecase, e.Item as TodoItem));
+        }
+
+        async void DeleteMenu_Clicked(object sender, EventArgs e)
+        {
+            if (await this.DisplayAlert("Confirm", "Confirm delete?", "Yes", "No"))
+            {
+                var todoItem = (sender as MenuItem)?.CommandParameter as TodoItem;
+                if (viewModel.DeleteCommand.CanExecute() && todoItem != null)
+                {
+                    viewModel.DeleteCommand.Execute(todoItem);
+                }
+            }
         }
     }
 }

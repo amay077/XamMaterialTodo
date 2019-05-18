@@ -43,7 +43,7 @@ namespace XamMaterialTodo.Detail
             UpdatedItem = Observable.CombineLatest(
                 Title, Description, Priority, IsDueDateEnabled, DueDate,
                 (title, description, priority, isDueDateEnabled, dueDate) =>
-                    new TodoItem(item.Id, title, IsCompleted.Value, description, priority, isDueDateEnabled ? dueDate : (DateTimeOffset?)null))
+                    new TodoItem(item.Id, title, IsCompleted.Value, description, priority, isDueDateEnabled ? dueDate : (DateTimeOffset?)null, item.CreateDate))
                 .ToReadOnlyReactiveProperty();
 
             UpdatedItem.Subscribe(async x => 
