@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="XamMaterialTodo.Detail.DetailPage"
+    Title="{Binding Title.Value}">
+    
+    <ContentPage.ToolbarItems> 
+        <ToolbarItem x:Name="toolBarItem" Command="{Binding ToggleDoneCommand}" />
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <StackLayout
+            Orientation="Vertical"
+            VerticalOptions="FillAndExpand"
+            HorizontalOptions="FillAndExpand">
+            
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Entry Placeholder="Title" Text="{Binding Title.Value, Mode=TwoWay}" HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
+            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                
+                <StackLayout Grid.Column="0" Orientation="Horizontal">
+                    <Switch IsToggled="{Binding IsDueDateEnabled.Value}" />
+                    <DatePicker Date="{Binding DueDate.Value, Mode=TwoWay}" IsEnabled="{Binding IsDueDateEnabled.Value}" />
+                </StackLayout>
+                
+                <StackLayout Grid.Column="1" Orientation="Horizontal" VerticalOptions="Center">
+                    <Label Text="Low" />
+                    <Slider Minimum="0" Maximum="4" Value="{Binding Priority.Value}"  HorizontalOptions="FillAndExpand" />    
+                    <Label Text="High" />
+                </StackLayout>
+                
+                
+                
+            </Grid>
+            
+            
+            
+            
+            <Editor Placeholder="Description" Text="{Binding Description.Value, Mode=TwoWay}" VerticalOptions="FillAndExpand"></Editor>
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

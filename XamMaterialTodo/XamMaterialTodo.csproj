@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ProduceAssemblyReference>true</ProduceAssemblyReference>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="3.6.0.264807" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.0.1" />
+    <PackageReference Include="LiveXAML" Version="2.1.72" />
+    <PackageReference Include="ReactiveProperty" Version="5.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Main\" />
+    <Folder Include="Detail\" />
+    <Folder Include="DataModels\" />
+    <Folder Include="Usecases\" />
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Detail\DetailPage.xaml.cs">
+      <DependentUpon>DetailPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+</Project>
