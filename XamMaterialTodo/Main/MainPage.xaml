@@ -44,7 +44,7 @@
             <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Source="https://xamarin.com/content/images/pages/forms/example-app.png" />
 
             <ImageButton Grid.Column="1" Grid.Row="1"
-                    Source="https://xamarin.com/content/images/pages/forms/example-app.png"
+                    Source="https://raw.githubusercontent.com/amay077/XamMaterialTodo/master/img/sharp_done_white_48dp.png"
                     BorderWidth="0.15" BackgroundColor="#2B78FE" BorderColor="Gray" 
                     Padding="10" CornerRadius="40" 
                     WidthRequest="63" HeightRequest="62"  
