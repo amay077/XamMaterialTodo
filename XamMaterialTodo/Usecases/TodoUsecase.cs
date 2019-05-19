@@ -51,7 +51,7 @@ namespace XamMaterialTodo.Usecases
 
         public async Task<TodoItem> Add()
         {
-            var newItem = new TodoItem(DateTime.Now.Ticks.ToString(), string.Empty, false, string.Empty, 0, null, DateTimeOffset.Now);
+            var newItem = new TodoItem(DateTime.Now.Ticks.ToString(), "無題のTODO", false, string.Empty, 0, null, DateTimeOffset.Now);
             await todoRepository.Add(newItem);
             await LoadItemsInternal();
             return newItem;

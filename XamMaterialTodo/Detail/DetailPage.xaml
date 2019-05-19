@@ -3,7 +3,8 @@
     xmlns="http://xamarin.com/schemas/2014/forms" 
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     x:Class="XamMaterialTodo.Detail.DetailPage"
-    Title="{Binding Title.Value}">
+    Title="{Binding Title.Value}"
+    Visual="Material">
     
     <ContentPage.ToolbarItems> 
     </ContentPage.ToolbarItems>
@@ -22,40 +23,59 @@
             
         
             <StackLayout Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2"
+                Padding="10,0,10,0"
                 Orientation="Vertical"
                 VerticalOptions="FillAndExpand"
                 HorizontalOptions="FillAndExpand">
                 
-                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                    <Entry Placeholder="Title" Text="{Binding Title.Value, Mode=TwoWay}" HorizontalOptions="FillAndExpand"/>
-                </StackLayout>
+                <Entry HorizontalOptions="FillAndExpand"                        
+                       BackgroundColor="White" Placeholder="Title" Text="{Binding Title.Value, Mode=TwoWay}" />
                 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    
-                    <StackLayout Grid.Column="0" Orientation="Horizontal">
-                        <Switch IsToggled="{Binding IsDueDateEnabled.Value}" />
-                        <DatePicker Date="{Binding DueDate.Value, Mode=TwoWay}" IsEnabled="{Binding IsDueDateEnabled.Value}" />
-                    </StackLayout>
-                    
-                    <StackLayout Grid.Column="1" Orientation="Horizontal" VerticalOptions="Center">
-                        <Label Text="Low" />
-                        <Slider Minimum="0" Maximum="4" Value="{Binding Priority.Value}"  HorizontalOptions="FillAndExpand" />    
-                        <Label Text="High" />
-                    </StackLayout>
-                </Grid>
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween" HeightRequest="40" Margin="0,0,5,0">
+                    <Image Margin="10,0" FlexLayout.AlignSelf="Center" WidthRequest="30" HeightRequest="30" 
+                           Source="https://raw.githubusercontent.com/amay077/XamMaterialTodo/master/img/baseline_date_range_black_48dp.png" />
+                    <AbsoluteLayout FlexLayout.AlignSelf="Center">
+                    <DatePicker Visual="Default" 
+                                IsVisible="{Binding HasDueDate.Value}"
+                                TextColor="Black" 
+                                Date="{Binding DueDate.Value}" />
+                    <DatePicker Visual="Default" 
+                                IsVisible="{Binding NoDueDate.Value}"
+                                TextColor="LightGray" 
+                                Date="{Binding DueDate.Value}" />
+                    </AbsoluteLayout>
+                    <BoxView FlexLayout.Grow="1" />
+                    <ImageButton FlexLayout.AlignSelf="Center" BackgroundColor="Transparent" WidthRequest="20" HeightRequest="20" 
+                                 IsVisible="{Binding HasDueDate.Value}"
+                                 Source="https://raw.githubusercontent.com/amay077/XamMaterialTodo/master/img/baseline_close_black_48dp.png" 
+                                 Command="{Binding DeleteDueDateCommand}"/>
+                </FlexLayout>
                 
-                <Editor Placeholder="Description" Text="{Binding Description.Value, Mode=TwoWay}" VerticalOptions="FillAndExpand"></Editor>
+                <BoxView Margin="5,0" HeightRequest="0.5" BackgroundColor="Gray" />
+                
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween" HeightRequest="40" Margin="0,0,5,0" >
+                    <Image Margin="10,0" FlexLayout.AlignSelf="Center" WidthRequest="30" HeightRequest="30" 
+                           Source="https://raw.githubusercontent.com/amay077/XamMaterialTodo/master/img/outline_swap_vert_black_48dp.png" />
+                    <Label FlexLayout.AlignSelf="Center" Text="Low" FontSize="Small" Margin="10,0,0,0" />
+                    <Slider Margin="5,0" FlexLayout.AlignSelf="Center" FlexLayout.Grow="1" Minimum="0" Maximum="3" Value="{Binding Priority.Value}"  HorizontalOptions="FillAndExpand" />    
+                    <Label FlexLayout.AlignSelf="Center" Text="High" FontSize="Small" />
+                </FlexLayout>
+
+                <BoxView Margin="5,0" HeightRequest="0.5" BackgroundColor="Gray" />
+
+                
+                <Editor 
+                    Placeholder="Description" 
+                    BackgroundColor="Transparent"
+                    Text="{Binding Description.Value, Mode=TwoWay}" 
+                    VerticalOptions="FillAndExpand"></Editor>
                 
             </StackLayout>
             
             <ImageButton Grid.Column="1" Grid.Row="1"
                 Source="https://raw.githubusercontent.com/amay077/XamMaterialTodo/master/img/sharp_done_white_48dp.png"
-                BorderWidth="0.15" BackgroundColor="#2B78FE" BorderColor="Gray" 
-                Padding="10" CornerRadius="40" 
+                BackgroundColor="#2B78FE" 
+                Padding="10" CornerRadius="25" 
                 WidthRequest="50" HeightRequest="50"  
                 VerticalOptions="Center" HorizontalOptions="Center"
                 Command="{Binding DoneCommand}"/>

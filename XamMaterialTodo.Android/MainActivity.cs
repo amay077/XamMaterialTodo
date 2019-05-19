@@ -21,6 +21,8 @@ namespace XamMaterialTodo.Droid
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Xamarin.Forms.FormsMaterial.Init(this, savedInstanceState);
+
             LoadApplication(new App());
         }
 

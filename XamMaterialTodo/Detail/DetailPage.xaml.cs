@@ -17,16 +17,10 @@ namespace XamMaterialTodo.Detail
             InitializeComponent();
             viewModel = new DetailPageViewModel(todoUsecase, item);
             this.BindingContext = viewModel;
-
             viewModel.ClosePageRequest.Subscribe(async _ => 
             {
                 await this.Navigation.PopAsync();
             });
-        }
-
-        ~DetailPage()
-        {
-            viewModel.Dispose();
         }
     }
 }
