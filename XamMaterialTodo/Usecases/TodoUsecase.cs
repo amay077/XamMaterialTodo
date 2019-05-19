@@ -17,20 +17,20 @@ namespace XamMaterialTodo.Usecases
         private ReactiveCollection<TodoItem> TodoItemsInternal { get; } = new ReactiveCollection<TodoItem>();
         public ReadOnlyReactiveCollection<TodoItem> TodoItems { get; }
 
-        private ReactiveProperty<bool> IsVisibleCompletedInternal { get; } = new ReactiveProperty<bool>(true);
-        public ReadOnlyReactiveProperty<bool> IsVisibleCompleted { get; }
+        private ReactiveProperty<bool> IsVisibleDoneInternal { get; } = new ReactiveProperty<bool>(true);
+        public ReadOnlyReactiveProperty<bool> IsVisibleDone { get; }
 
         public TodoUsecase(ITodoRepository todoRepository)
         {
             this.todoRepository = todoRepository;
 
-            IsVisibleCompleted = IsVisibleCompletedInternal.ToReadOnlyReactiveProperty();
+            IsVisibleDone = IsVisibleDoneInternal.ToReadOnlyReactiveProperty();
             TodoItems = TodoItemsInternal.ToReadOnlyReactiveCollection();
         }
 
-        public async Task ToggleShowCompleted()
+        public async Task ToggleShowDone()
         {
-            IsVisibleCompletedInternal.Value = !IsVisibleCompletedInternal.Value;
+            IsVisibleDoneInternal.Value = !IsVisibleDoneInternal.Value;
             await LoadItemsInternal();
         }
 
@@ -41,7 +41,7 @@ namespace XamMaterialTodo.Usecases
 
         private async Task LoadItemsInternal()
         {
-            var items = await todoRepository.ReadAll(IsVisibleCompleted.Value);
+            var items = await todoRepository.ReadAll(IsVisibleDone.Value);
             TodoItemsInternal.Clear();
             foreach (var item in items)
             {
@@ -71,12 +71,12 @@ namespace XamMaterialTodo.Usecases
 
         public async Task Done(TodoItem item)
         {
-            await Update(item.MakeCompleted(true));
+            await Update(item.MakeDone(true));
         }
 
         public async Task Undone(TodoItem item)
         {
-            await Update(item.MakeCompleted(false));
+            await Update(item.MakeDone(false));
         }
     }
 }

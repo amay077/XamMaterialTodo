@@ -13,13 +13,14 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <vc:DoneConverter x:Key="doneConv" />
-            <vc:PriorityConverter x:Key="priorityConv" />
+            <vc:PriorityLabelConverter x:Key="prLabelConv" />
+            <vc:PriorityColorConverter x:Key="prColorConv" />
             <vc:DueDateConverter x:Key="dueDateConv" />
         </ResourceDictionary>
     </ContentPage.Resources>
     
     <ContentPage.ToolbarItems> 
-        <ToolbarItem x:Name="toolBarItem" Command="{Binding ToggleShowCompletedCommand}" />
+        <ToolbarItem x:Name="toolBarItem" Command="{Binding ToggleShowDoneCommand}" />
     </ContentPage.ToolbarItems>
     
     <ContentPage.Content>
@@ -37,27 +38,38 @@
             <ListView Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" 
                       x:Name="listView" ItemsSource="{Binding TodoItems}" SelectionMode="None"
                       SeparatorVisibility="None"
+                      RowHeight="50"
                       ItemTapped="ListView_ItemTapped" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.ContextActions>
-                                <MenuItem IsEnabled="{Binding IsCompleted}" Text="Undone"
+                                <MenuItem IsEnabled="{Binding IsDone}" Text="Undone"
                                           Command="{Binding BindingContext.UndoneCommand, Source={x:Reference page}}" 
                                           CommandParameter="{Binding}" />
-
+                                          
                                 <MenuItem Text="Delete" 
                                           Clicked="DeleteMenu_Clicked" 
                                           CommandParameter="{Binding}" />
                             </ViewCell.ContextActions>
                             <FlexLayout Direction="Row" JustifyContent="SpaceBetween"
-                                        Padding="10,30"
+                                Padding="10,0"
                                 HorizontalOptions="FillAndExpand">
                                 <Image FlexLayout.AlignSelf="Center" WidthRequest="30" HeightRequest="30" Margin="0,0,5,0"
-                                       Source="{Binding IsCompleted, Converter={StaticResource doneConv}}" />
+                                       Source="{Binding IsDone, Converter={StaticResource doneConv}}" />
                                 <Label FlexLayout.AlignSelf="Center" FlexLayout.Grow="1" Text="{Binding Title}" Margin="0,0,5,0"/>
                                 <Label FlexLayout.AlignSelf="Center" Text="{Binding DueDate, Converter={StaticResource dueDateConv}}" Margin="0,0,5,0" />
-                                <Label FlexLayout.AlignSelf="Center" FlexLayout.Basis="50" HorizontalTextAlignment="End" Text="{Binding Priority, Converter={StaticResource priorityConv}}"/>
+                                
+                                <Frame FlexLayout.AlignSelf="Center" FlexLayout.Basis="50" 
+                                       HasShadow="False" Padding="3,2,3,3" 
+                                      BackgroundColor="{Binding Priority, Converter={StaticResource prColorConv}}"
+                                       VerticalOptions="Center" HeightRequest="18" CornerRadius="5">
+                                    <Label VerticalTextAlignment="Center" FontAttributes="Bold" Margin="0" FontSize="Small" 
+                                           Text="{Binding Priority, Converter={StaticResource prLabelConv}}" 
+                                           HorizontalOptions="Center" TextColor="White"/>
+                                </Frame>
+                                
+                                
                             </FlexLayout>
                         </ViewCell>
                     </DataTemplate>

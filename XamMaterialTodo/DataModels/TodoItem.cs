@@ -7,7 +7,7 @@ namespace XamMaterialTodo.DataModels
         public string Title { get; private set; }
         public string Description { get; private set; }
         public int Priority { get; private set; }
-        public bool IsCompleted { get; private set; }
+        public bool IsDone { get; private set; }
         public DateTimeOffset? DueDate { get; private set; }
         public DateTimeOffset CreateDate { get; private set; }
 
@@ -15,20 +15,20 @@ namespace XamMaterialTodo.DataModels
         {
         }
 
-        public TodoItem(string id, string title, bool isCompleted, string description, int priority, DateTimeOffset? dueDate, DateTimeOffset createDate)
+        public TodoItem(string id, string title, bool isDone, string description, int priority, DateTimeOffset? dueDate, DateTimeOffset createDate)
         {
             this.Id = id;
             this.Title = title;
             this.Description = description;
             this.Priority = priority;
-            this.IsCompleted = isCompleted;
+            this.IsDone = isDone;
             this.DueDate = dueDate;
             this.CreateDate = createDate;
         }
 
-        public TodoItem MakeCompleted(bool isCompleted)
+        public TodoItem MakeDone(bool isDone)
         {
-            return new TodoItem(Id, Title, isCompleted, Description, Priority, DueDate, CreateDate);
+            return new TodoItem(Id, Title, isDone, Description, Priority, DueDate, CreateDate);
         }
     }
 }

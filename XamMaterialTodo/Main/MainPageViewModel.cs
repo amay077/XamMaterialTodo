@@ -10,8 +10,8 @@ namespace XamMaterialTodo.Main
     {
         public ReadOnlyReactiveCollection<TodoItem> TodoItems { get; }
 
-        public ReadOnlyReactiveProperty<bool> IsVisibleCompleted { get; }
-        public ReactiveCommand ToggleShowCompletedCommand { get; } = new ReactiveCommand();
+        public ReadOnlyReactiveProperty<bool> IsVisibleDone { get; }
+        public ReactiveCommand ToggleShowDoneCommand { get; } = new ReactiveCommand();
         public ReadOnlyReactiveProperty<string> FilterLabel { get; }
 
         private readonly ReactiveProperty<TodoItem> openDetailPageRequestInner = new ReactiveProperty<TodoItem>(initialValue: null, mode: ReactivePropertyMode.None);
@@ -26,12 +26,12 @@ namespace XamMaterialTodo.Main
             TodoItems = todoUsecase.TodoItems.ToReadOnlyReactiveCollection();
             OpenDetailPageRequest = openDetailPageRequestInner.ToReadOnlyReactiveProperty();
 
-            IsVisibleCompleted = todoUsecase.IsVisibleCompleted;
-            FilterLabel = IsVisibleCompleted.Select(x => x ? "Hide Done" : "Show Done").ToReadOnlyReactiveProperty();
+            IsVisibleDone = todoUsecase.IsVisibleDone;
+            FilterLabel = IsVisibleDone.Select(x => x ? "Hide Done" : "Show Done").ToReadOnlyReactiveProperty();
 
-            ToggleShowCompletedCommand.Subscribe(async _ => 
+            ToggleShowDoneCommand.Subscribe(async _ => 
             {
-                await todoUsecase.ToggleShowCompleted();
+                await todoUsecase.ToggleShowDone();
             });
 
             AddCommand.Subscribe(async _ => 

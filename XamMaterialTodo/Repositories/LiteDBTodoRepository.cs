@@ -13,7 +13,7 @@ namespace XamMaterialTodo.Repositories
         private readonly string dataBasePath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.Personal), "todo.litedb");
 
-        public Task<IEnumerable<TodoItem>> ReadAll(bool containsCompleted)
+        public Task<IEnumerable<TodoItem>> ReadAll(bool containsDone)
         {
             return Task.Factory.StartNew<IEnumerable<TodoItem>>(() => 
             {
@@ -21,7 +21,7 @@ namespace XamMaterialTodo.Repositories
                 {
                     var items = db.GetCollection<TodoItem>();
                     return items.FindAll()
-                        .Where(x => containsCompleted ? true : !x.IsCompleted)
+                        .Where(x => containsDone ? true : !x.IsDone)
                         .OrderByDescending(x => x.Priority)
                         .ThenByDescending(x => x.CreateDate);
                 }

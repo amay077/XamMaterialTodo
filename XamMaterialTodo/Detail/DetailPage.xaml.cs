@@ -12,10 +12,10 @@ namespace XamMaterialTodo.Detail
     {
         private readonly DetailPageViewModel viewModel;
 
-        public DetailPage(TodoUsecase todoUsecase, TodoItem item)
+        public DetailPage(TodoUsecase todoUsecase, TodoItem item, bool isNew)
         {
             InitializeComponent();
-            viewModel = new DetailPageViewModel(todoUsecase, item);
+            viewModel = new DetailPageViewModel(todoUsecase, item, isNew);
             this.BindingContext = viewModel;
             viewModel.ClosePageRequest.Subscribe(async _ => 
             {

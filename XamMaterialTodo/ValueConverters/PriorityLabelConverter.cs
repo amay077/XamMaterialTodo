@@ -4,13 +4,18 @@ using Xamarin.Forms;
 
 namespace XamMaterialTodo.ValueConverters
 {
-    public sealed class DueDateConverter : IValueConverter
+    public sealed class PriorityLabelConverter : IValueConverter
     {
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var dt = (DateTimeOffset?)value;
-
-            return dt != null ? "〜" + dt.Value.ToString("M/d") : string.Empty;
+            var priority = (int)value;
+            switch (priority)
+            {
+                case 1: return "Low";
+                case 2: return "Mid";
+                case 3: return "High";
+                default: return "";
+            }
         }
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

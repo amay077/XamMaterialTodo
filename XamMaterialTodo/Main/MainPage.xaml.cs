@@ -36,14 +36,14 @@ namespace XamMaterialTodo.Main
 
             viewModel.OpenDetailPageRequest.Where(x => x != null).Subscribe(async todoItem =>
             {
-                await this.Navigation.PushAsync(new DetailPage(todoUsecase, todoItem));
+                await this.Navigation.PushAsync(new DetailPage(todoUsecase, todoItem, true));
             });
 
         }
 
         async void ListView_ItemTapped(object sender, Xamarin.Forms.ItemTappedEventArgs e)
         {
-            await this.Navigation.PushAsync(new DetailPage(todoUsecase, e.Item as TodoItem));
+            await this.Navigation.PushAsync(new DetailPage(todoUsecase, e.Item as TodoItem, false));
         }
 
         async void DeleteMenu_Clicked(object sender, EventArgs e)

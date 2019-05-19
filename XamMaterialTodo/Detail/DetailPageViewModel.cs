@@ -14,12 +14,11 @@ namespace XamMaterialTodo.Detail
     {
         public ReactiveProperty<string> Title { get; }
         public ReactiveProperty<string> Description { get; }
-        private ReactiveProperty<bool> IsCompleted { get; }
+        public ReactiveProperty<bool> IsDone { get; }
         public ReadOnlyReactiveProperty<string> ActionLabel { get; }
         public ReactiveProperty<int> Priority { get; }
 
         public ReactiveProperty<bool> HasDueDate { get; }
-        public ReadOnlyReactiveProperty<bool> NoDueDate { get; }
         public ReactiveProperty<DateTime> DueDate { get; }
 
         public ReadOnlyReactiveProperty<TodoItem> UpdatedItem { get; }
@@ -31,23 +30,22 @@ namespace XamMaterialTodo.Detail
         private readonly ReactiveProperty<Unit> closePageRequestInner = new ReactiveProperty<Unit>(mode: ReactivePropertyMode.None);
         public ReadOnlyReactiveProperty<Unit> ClosePageRequest { get; }
 
-        public DetailPageViewModel(TodoUsecase todoUsecase, TodoItem item)
+        public DetailPageViewModel(TodoUsecase todoUsecase, TodoItem item, bool isNew)
         {
             Title = new ReactiveProperty<string>(item.Title);
             Description = new ReactiveProperty<string>(item.Description);
-            IsCompleted = new ReactiveProperty<bool>(item.IsCompleted);
+            IsDone = new ReactiveProperty<bool>(item.IsDone);
             Priority = new ReactiveProperty<int>(item.Priority);
 
             ClosePageRequest = closePageRequestInner.ToReadOnlyReactiveProperty();
 
             HasDueDate = new ReactiveProperty<bool>(item.DueDate.HasValue);
-            NoDueDate = HasDueDate.Select(x => !x).ToReadOnlyReactiveProperty();
-            DueDate = new ReactiveProperty<DateTime>(item.DueDate.HasValue ? item.DueDate.Value.LocalDateTime : DateTime.Now);
+            DueDate = new ReactiveProperty<DateTime>(item.DueDate.HasValue ? item.DueDate.Value.LocalDateTime : DateTime.Today);
 
             UpdatedItem = Observable.CombineLatest(
                 Title, Description, Priority, HasDueDate, DueDate,
                 (title, description, priority, hasDueDate, dueDate) =>
-                    new TodoItem(item.Id, title, IsCompleted.Value, description, priority, hasDueDate ? dueDate : (DateTimeOffset?)null, item.CreateDate))
+                    new TodoItem(item.Id, title, IsDone.Value, description, priority, hasDueDate ? dueDate : (DateTimeOffset?)null, item.CreateDate))
                 .ToReadOnlyReactiveProperty();
 
             UpdatedItem.Subscribe(async x => 
@@ -55,8 +53,12 @@ namespace XamMaterialTodo.Detail
                 await todoUsecase.Update(x);
             });
 
-            DueDate.Subscribe(_ => 
+            DueDate.Subscribe(x => 
             {
+                if (x == DateTime.Today)
+                {
+                    return;
+                }
                 HasDueDate.Value = true;
             });
 
@@ -73,7 +75,7 @@ namespace XamMaterialTodo.Detail
             DoneCommand.Subscribe(async _ => 
             {
                 await todoUsecase.Done(UpdatedItem.Value);
-                IsCompleted.Value = true;
+                IsDone.Value = true;
                 closePageRequestInner.Value = Unit.Default;
             });
         }
