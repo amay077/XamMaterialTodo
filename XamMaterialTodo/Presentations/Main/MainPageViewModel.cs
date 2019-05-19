@@ -4,7 +4,7 @@ using Reactive.Bindings;
 using XamMaterialTodo.DataModels;
 using XamMaterialTodo.Usecases;
 
-namespace XamMaterialTodo.Main
+namespace XamMaterialTodo.Presentations.Main
 {
     public sealed class MainPageViewModel
     {

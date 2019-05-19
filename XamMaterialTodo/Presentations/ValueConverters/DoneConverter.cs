@@ -2,7 +2,7 @@
 using System.Globalization;
 using Xamarin.Forms;
 
-namespace XamMaterialTodo.ValueConverters
+namespace XamMaterialTodo.Presentations.ValueConverters
 {
     public sealed class DoneConverter : IValueConverter
     {

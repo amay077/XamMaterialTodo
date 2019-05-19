@@ -8,7 +8,7 @@ using Xamarin.Forms;
 using XamMaterialTodo.DataModels;
 using XamMaterialTodo.Usecases;
 
-namespace XamMaterialTodo.Detail
+namespace XamMaterialTodo.Presentations.Detail
 {
     public sealed class DetailPageViewModel
     {

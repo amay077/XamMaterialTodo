@@ -2,20 +2,15 @@
 using System.Globalization;
 using Xamarin.Forms;
 
-namespace XamMaterialTodo.ValueConverters
+namespace XamMaterialTodo.Presentations.ValueConverters
 {
-    public sealed class PriorityColorConverter : IValueConverter
+    public sealed class DueDateConverter : IValueConverter
     {
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var priority = (int)value;
-            switch (priority)
-            {
-                case 1: return Color.LightGreen;
-                case 2: return Color.Blue;
-                case 3: return Color.Red;
-                default: return Color.Transparent;
-            }
+            var dt = (DateTimeOffset?)value;
+
+            return dt != null ? "〜" + dt.Value.ToString("M/d") : string.Empty;
         }
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

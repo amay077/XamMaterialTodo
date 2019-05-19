@@ -2,19 +2,19 @@
 using System.Globalization;
 using Xamarin.Forms;
 
-namespace XamMaterialTodo.ValueConverters
+namespace XamMaterialTodo.Presentations.ValueConverters
 {
-    public sealed class InverseConverter : IValueConverter
+    public sealed class PriorityColorConverter : IValueConverter
     {
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            try
+            var priority = (int)value;
+            switch (priority)
             {
-                return !(bool)value;
-            }
-            catch (Exception ex)
-            {
-                return false;
+                case 1: return Color.LightGreen;
+                case 2: return Color.Blue;
+                case 3: return Color.Red;
+                default: return Color.Transparent;
             }
         }
 
