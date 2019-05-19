@@ -41,10 +41,12 @@
                     <AbsoluteLayout FlexLayout.AlignSelf="Center">
                     <DatePicker Visual="Default" 
                                 IsVisible="{Binding HasDueDate.Value}"
+                                Format="yyyy/MM/dd"
                                 TextColor="Black" 
                                 Date="{Binding DueDate.Value}" />
                     <DatePicker Visual="Default" 
                                 IsVisible="{Binding HasDueDate.Value, Converter={StaticResource inverseConv}}"
+                                Format="yyyy/MM/dd"
                                 TextColor="LightGray" 
                                 Date="{Binding DueDate.Value}" />
                     </AbsoluteLayout>
@@ -80,9 +82,9 @@
                 Source="https://raw.githubusercontent.com/amay077/XamMaterialTodo/master/img/sharp_done_white_48dp.png"
                 BackgroundColor="#2B78FE" 
                 Padding="10" CornerRadius="25" 
-                WidthRequest="50" HeightRequest="50"  
+                WidthRequest="50" HeightRequest="50"
                 VerticalOptions="Center" HorizontalOptions="Center"
-                         IsVisible="{Binding IsDone.Value, Converter={StaticResource inverseConv}}"
+                IsVisible="{Binding IsVisibleDone.Value}"
                 Command="{Binding DoneCommand}"/>
                 
         </Grid>

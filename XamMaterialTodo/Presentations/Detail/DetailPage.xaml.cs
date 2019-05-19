@@ -10,17 +10,16 @@ namespace XamMaterialTodo.Presentations.Detail
 
     public partial class DetailPage : ContentPage
     {
-        private readonly DetailPageViewModel viewModel;
-
         public DetailPage(TodoUsecase todoUsecase, TodoItem item, bool isNew)
         {
             InitializeComponent();
-            viewModel = new DetailPageViewModel(todoUsecase, item, isNew);
+            var viewModel = new DetailPageViewModel(todoUsecase, item, isNew);
             this.BindingContext = viewModel;
-            viewModel.ClosePageRequest.Subscribe(async _ => 
+
+            viewModel.ClosePageRequest += async (sender, e) => 
             {
                 await this.Navigation.PopAsync();
-            });
+            };
         }
     }
 }

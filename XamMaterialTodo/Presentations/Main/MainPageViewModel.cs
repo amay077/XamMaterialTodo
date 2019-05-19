@@ -14,8 +14,7 @@ namespace XamMaterialTodo.Presentations.Main
         public ReactiveCommand ToggleShowDoneCommand { get; } = new ReactiveCommand();
         public ReadOnlyReactiveProperty<string> FilterLabel { get; }
 
-        private readonly ReactiveProperty<TodoItem> openDetailPageRequestInner = new ReactiveProperty<TodoItem>(initialValue: null, mode: ReactivePropertyMode.None);
-        public ReadOnlyReactiveProperty<TodoItem> OpenDetailPageRequest { get; }
+        public event EventHandler<TodoItem> OpenNewTodoPageRequest;
 
         public ReactiveCommand AddCommand { get; } = new ReactiveCommand();
         public ReactiveCommand<TodoItem> DeleteCommand { get; } = new ReactiveCommand<TodoItem>();
@@ -24,7 +23,6 @@ namespace XamMaterialTodo.Presentations.Main
         public MainPageViewModel(TodoUsecase todoUsecase)
         {
             TodoItems = todoUsecase.TodoItems.ToReadOnlyReactiveCollection();
-            OpenDetailPageRequest = openDetailPageRequestInner.ToReadOnlyReactiveProperty();
 
             IsVisibleDone = todoUsecase.IsVisibleDone;
             FilterLabel = IsVisibleDone.Select(x => x ? "Hide Done" : "Show Done").ToReadOnlyReactiveProperty();
@@ -37,7 +35,7 @@ namespace XamMaterialTodo.Presentations.Main
             AddCommand.Subscribe(async _ => 
             {
                 var newItem = await todoUsecase.Add();
-                openDetailPageRequestInner.Value = newItem;
+                OpenNewTodoPageRequest?.Invoke(this, newItem);
             });
 
             DeleteCommand.Subscribe(async item =>

@@ -2,6 +2,7 @@
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using Xamarin.Forms;
@@ -20,15 +21,15 @@ namespace XamMaterialTodo.Presentations.Detail
 
         public ReactiveProperty<bool> HasDueDate { get; }
         public ReactiveProperty<DateTime> DueDate { get; }
-
-        public ReadOnlyReactiveProperty<TodoItem> UpdatedItem { get; }
-
-
         public ReactiveCommand DeleteDueDateCommand { get; } = new ReactiveCommand();
+
+        private ReadOnlyReactiveProperty<TodoItem> UpdatedItem { get; }
+
+
+        public ReadOnlyReactiveProperty<bool> IsVisibleDone { get; }
         public ReactiveCommand DoneCommand { get; } = new ReactiveCommand();
 
-        private readonly ReactiveProperty<Unit> closePageRequestInner = new ReactiveProperty<Unit>(mode: ReactivePropertyMode.None);
-        public ReadOnlyReactiveProperty<Unit> ClosePageRequest { get; }
+        public event EventHandler<Unit> ClosePageRequest;
 
         public DetailPageViewModel(TodoUsecase todoUsecase, TodoItem item, bool isNew)
         {
@@ -36,8 +37,6 @@ namespace XamMaterialTodo.Presentations.Detail
             Description = new ReactiveProperty<string>(item.Description);
             IsDone = new ReactiveProperty<bool>(item.IsDone);
             Priority = new ReactiveProperty<int>(item.Priority);
-
-            ClosePageRequest = closePageRequestInner.ToReadOnlyReactiveProperty();
 
             HasDueDate = new ReactiveProperty<bool>(item.DueDate.HasValue);
             DueDate = new ReactiveProperty<DateTime>(item.DueDate.HasValue ? item.DueDate.Value.LocalDateTime : DateTime.Today);
@@ -72,11 +71,12 @@ namespace XamMaterialTodo.Presentations.Detail
                 HasDueDate.Value = false;
             });
 
+            IsVisibleDone = Observable.Return(!isNew).ToReadOnlyReactiveProperty();
             DoneCommand.Subscribe(async _ => 
             {
                 await todoUsecase.Done(UpdatedItem.Value);
                 IsDone.Value = true;
-                closePageRequestInner.Value = Unit.Default;
+                ClosePageRequest?.Invoke(this, Unit.Default);
             });
         }
     }

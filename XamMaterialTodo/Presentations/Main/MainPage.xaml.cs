@@ -33,11 +33,10 @@ namespace XamMaterialTodo.Presentations.Main
                 toolBarItem.Text = x;
             });
 
-            viewModel.OpenDetailPageRequest.Where(x => x != null).Subscribe(async todoItem =>
+            viewModel.OpenNewTodoPageRequest += async (sender, todoItem) =>
             {
                 await this.Navigation.PushAsync(new DetailPage(todoUsecase, todoItem, true));
-            });
-
+            };
         }
 
         async void ListView_ItemTapped(object sender, Xamarin.Forms.ItemTappedEventArgs e)
