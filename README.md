@@ -127,3 +127,8 @@ SQLite, Firebase Firestore, AppCenter Data といった他のデータストア�
 #### ReactiveProperty と Reactive Extensions
 
 Page とのデータバインディングに必要な ViewModel の INotifyPropertyChanged の実装は [ReactiveProperty](https://github.com/runceel/ReactiveProperty) を採用しています。
+
+
+## 参考にしない方がよい点
+
+## HotReload について

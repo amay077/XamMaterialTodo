@@ -8,7 +8,7 @@
     x:Class="XamMaterialTodo.Presentations.Main.MainPage"
     Title="TODO List"
     x:Name="page"
-    Visual="Default">    
+    Visual="Material">    
     
     <ContentPage.Resources>
         <ResourceDictionary>
