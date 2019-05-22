@@ -46,9 +46,9 @@ Visual の実態は Custom Renderer であり、``Material`` と設定された�
 
 Visual Studio 2017/2019 または Visual Studio for Mac で ``XamMaterialTodo.sln`` ファイルを開き、実機またはエミュレータをデプロイ先に選択して実行してください。
 
-## どんなサンプル？
+## どんなサンプルアプリ？
 
-さて、この Visual Material に触れるサンプルとして、簡単な ToDo アプリケーションを作成しました。
+さて、この Visual Material に触れるサンプルとして用意したのが、簡単な ToDo アプリケーションです。
 
 ### メイン画面
 
@@ -95,7 +95,7 @@ Visual Studio 2017/2019 または Visual Studio for Mac で ``XamMaterialTodo.sl
 
 ### 対応されていないUI部品は？
 
-CustomRenderer を自作するか、既存の部品を組み合わせてそれっぽく見せるしかないです。
+Custom Renderer を自作するか、既存の部品を組み合わせてそれっぽく見せるしかないです。
 
 例えば、[FAB(Floating Action Button)](https://material.io/design/components/buttons-floating-action-button.html) は、このサンプルでは、ただの丸い ``ImageButton`` です。
 
@@ -109,13 +109,13 @@ CustomRenderer を自作するか、既存の部品を組み合わせてそれ�
     Command="{Binding AddCommand}"/>
 ```
 
-「もっと Material デザインにしたい！」という方は、2019年3月末に Xamarin チームが「Xamarin Visual Challenge」というオンラインイベントを行っていました。著名なアプリのデザインを Xamarin Forms を使って再現してみよう、という趣旨で、その結果は GitHub のリポジトリから見る、使うことができます。
+「もっと Material デザインにしたい！」という方は、2019年3月末に Xamarin チームが「Xamarin Visual Challenge」というオンラインイベントを行っていました。著名なアプリのデザインを Xamarin Forms を使って再現してみよう、という趣旨で、その結果を GitHub のリポジトリで見ることができます。
 
 * [Join the Xamarin Visual Challenge | Xamarin Blog](https://devblogs.microsoft.com/xamarin/join-the-xamarin-visual-challenge/)
 * [Visual Challenge Conquered! | Xamarin Blog](https://devblogs.microsoft.com/xamarin/visual-challenge-conquered/)
 * [Pull Requests · davidortinau/VisualChallenge](https://github.com/davidortinau/VisualChallenge/pulls)
 
-投稿された Pull Requests を見てみると、どのようにして Material デザインを再現したかが分かりますので、参考にしてみてください。「皆さん、自力で頑張ってるなあ」という感想を持ちました(Visual Material あまり関係なくない？ともw)。
+投稿された Pull Requests を見てみると、どのようにして Material デザインを再現したかが分かりますので、参考にしてみてください。私は「皆さん、自力で頑張ってるなあ」という感想を持ちました(Visual Material あまり関係なくない？ともw)。
 
 ### Visual と Shell
 
@@ -159,13 +159,13 @@ XamMaterialTodo プロジェクトのクラス図は以下のようになって�
 
 ### Repositories 名前空間
 
-データストアから、 ``TodoItem`` 読み出し、または保存する Interface 定義とその実装クラスを含みます。
+データストアから ``TodoItem`` 読み出し、または保存する Interface 定義とその実装クラスを含みます。
 
 今回はデータストアに LiteDB を採用しました。
 
 * [LiteDB :: A .NET embedded NoSQL database](https://www.litedb.org/)
 
-端末内のデータストアといえばまずは SQLite が想定されると思いますが、SQLite は、テーブルを設計・作成したり、データのI/Oのために SQL を記述する必要があるなどの面倒さがあります。
+端末内のデータストアといえばまずは SQLite が想定されると思いますが、SQLite はテーブルを設計・作成したり、データのI/Oのために SQL を記述する必要があるなどの面倒さがあります。
 LiteDB は、MogoDB のようなドキュメント指向の NoSQL で、データクラスである ``TodoItem`` をそのまま扱える利点があります。またすべて C# で実装されていて依存ライブラリが少なく、導入も簡単です。
 
 LiteDB に対してのデータIOは ``LiteDbTodoRepository`` として実装されています。
@@ -177,7 +177,7 @@ LiteDB に対してのデータIOは ``LiteDbTodoRepository`` として実装さ
 この層にはToDoアプリについてのビジネスロジックを実装したクラスが含まれます。
 今回は機能の少ない単純なアプリであるため、``TodoUsecase`` クラスが一つだけあり、「ToDo の追加や削除」、「ToDo の完了」、「未完了または全ての ToDo 一覧の取得」などの機能が実装されています。もちろんその実装には ``ITodoRepository`` が使用されています。 
 
-### Presentation 名前空間
+### Presentations 名前空間
 
 この層には、いわゆる MVVM の V(View) と VM(ViewModel) が含まれます。
 
@@ -250,10 +250,9 @@ Flutter や React の開発ツールは、コードを変更すると実行中�
 このサンプルでは、Xamarin.Forms でも HotReload を実現する LiveXAML というツールに必要な(nuget)ライブラリを同梱しています。
 
 * [LiveXAML for Xamarin Forms](https://www.livexaml.com/)
+* [Xamarin.Forms でも HotReload がしたい！ - Qiita](https://qiita.com/amay077/items/150f484e68924468a2c3)
 
 Visual Studio に LiveXAML の拡張機能をインストールして、アプリを実行すると、``xxx.xaml`` を変更して保存すればすぐに実行中のアプリに反映されます。有償ツールですがトライアル期間があり、それが切れても xaml ファイルが3つまでなら使用できますので、よければ試してみてください。私は LiveXAML で、画面開発の快適度が格段に上がりました。
-
-* [Xamarin.Forms でも HotReload がしたい！ - Qiita](https://qiita.com/amay077/items/150f484e68924468a2c3)
 
 ## ライセンス
 
