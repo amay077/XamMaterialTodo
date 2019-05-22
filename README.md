@@ -161,16 +161,16 @@ XamMaterialTodo プロジェクトのクラス図は以下のようになって�
 
 データストアから、 ``TodoItem`` 読み出し、または保存する Interface 定義とその実装クラスを含みます。
 
-今回はデータストアに LiteDB を採用しました。
+今回はデータストアに LiteDB を採用しました。
 
 * [LiteDB :: A .NET embedded NoSQL database](https://www.litedb.org/)
 
 端末内のデータストアといえばまずは SQLite が想定されると思いますが、SQLite は、テーブルを設計・作成したり、データのI/Oのために SQL を記述する必要があるなどの面倒さがあります。
-LiteDB は。MogoDB のようなドキュメント指向の NoSQL で、``TodoItem`` をそのまま扱える利点があります。またすべて C# で実装されており、導入も簡単です。
+LiteDB は、MogoDB のようなドキュメント指向の NoSQL で、データクラスである ``TodoItem`` をそのまま扱える利点があります。またすべて C# で実装されていて依存ライブラリが少なく、導入も簡単です。
 
 LiteDB に対してのデータIOは ``LiteDbTodoRepository`` として実装されています。
 
-SQLite, Firebase Firestore, AppCenter Data といった他のデータストアに対応したい場合は、 ``ITodoRepository`` インターフェースを実装して新しいリポジトリクラスを作成し、``LiteDbTodoRepository`` と差し替えるだけです。
+もし、SQLite, [Firebase Firestore](https://firebase.google.com/docs/firestore/), [AppCenter Data](https://docs.microsoft.com/en-us/appcenter/data/) といった他のデータストアに対応したい場合は、 ``ITodoRepository`` インターフェースを実装して新しいリポジトリクラスを作成し、``LiteDbTodoRepository`` と差し替えるだけです。
 
 ### Usecases 名前空間
 
@@ -254,3 +254,11 @@ Flutter や React の開発ツールは、コードを変更すると実行中�
 Visual Studio に LiveXAML の拡張機能をインストールして、アプリを実行すると、``xxx.xaml`` を変更して保存すればすぐに実行中のアプリに反映されます。有償ツールですがトライアル期間があり、それが切れても xaml ファイルが3つまでなら使用できますので、よければ試してみてください。私は LiveXAML で、画面開発の快適度が格段に上がりました。
 
 * [Xamarin.Forms でも HotReload がしたい！ - Qiita](https://qiita.com/amay077/items/150f484e68924468a2c3)
+
+## ライセンス
+
+See [LICENSE](LICENSE)
+
+## ご質問など
+
+このサンプルについての質問は [Issues](https://github.com/amay077/XamMaterialTodo/issues) へ、不具合の修正やその他ご指摘などは [Pull request](https://github.com/amay077/XamMaterialTodo/pulls) をお送りください。
