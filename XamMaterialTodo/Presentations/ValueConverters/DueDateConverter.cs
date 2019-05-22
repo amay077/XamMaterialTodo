@@ -10,7 +10,7 @@ namespace XamMaterialTodo.Presentations.ValueConverters
         {
             var dt = (DateTimeOffset?)value;
 
-            return dt != null ? "〜" + dt.Value.ToString("M/d") : string.Empty;
+            return dt != null ? "〜" + dt.Value.LocalDateTime.ToString("M/d") : string.Empty;
         }
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

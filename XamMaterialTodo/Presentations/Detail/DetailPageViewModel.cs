@@ -41,10 +41,12 @@ namespace XamMaterialTodo.Presentations.Detail
             HasDueDate = new ReactiveProperty<bool>(item.DueDate.HasValue);
             DueDate = new ReactiveProperty<DateTime>(item.DueDate.HasValue ? item.DueDate.Value.LocalDateTime : DateTime.Today);
 
+            // いずれかの項目が変化したら TodoItem を作り直す
             UpdatedItem = Observable.CombineLatest(
                 Title, Description, Priority, HasDueDate, DueDate,
                 (title, description, priority, hasDueDate, dueDate) =>
-                    new TodoItem(item.Id, title, IsDone.Value, description, priority, hasDueDate ? dueDate : (DateTimeOffset?)null, item.CreateDate))
+                    new TodoItem(item.Id, title, IsDone.Value, description, priority, 
+                        hasDueDate ? dueDate : (DateTimeOffset?)null, item.CreateDate))
                 .ToReadOnlyReactiveProperty();
 
             UpdatedItem.Subscribe(async x => 
@@ -71,7 +73,7 @@ namespace XamMaterialTodo.Presentations.Detail
                 HasDueDate.Value = false;
             });
 
-            IsVisibleDone = Observable.Return(!isNew).ToReadOnlyReactiveProperty();
+            IsVisibleDone = Observable.Return(!isNew && !item.IsDone).ToReadOnlyReactiveProperty();
             DoneCommand.Subscribe(async _ => 
             {
                 await todoUsecase.Done(UpdatedItem.Value);
