@@ -3,12 +3,14 @@ Xamarin.Forms Visual によるマテリアルな iOS/Android アプリのサン�
 
 ## これは何？
 
+このリポジトリは、2019年5月29〜30日に東京で開催された 「[de:code 2019](https://www.microsoft.com/ja-jp/events/decode/2019/default.aspx)」のセッション「[MW03: Xamarin.Forms アプリケーション設計パターン](https://www.microsoft.com/ja-jp/events/decode/2019session/detail.aspx?sid=MW03)」 に対応するサンプルコードと解説です。
+
 Xamarin.Forms 3.6 で **Xamarin.Forms Visual** という機能が追加されました。
 
 * [Beautiful Material Design for Android & iOS | Xamarin Blog](https://devblogs.microsoft.com/xamarin/beautiful-material-design-android-ios/)
 * [Xamarin.Forms Visual - Xamarin | Microsoft Docs](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/visual/)
 
-このリポジトリは、この Xamarin.Forms Visual を使用して Material デザインを適用した Android/iOS 向けのサンプルアプリケーションです。
+これは Xamarin.Forms Visual を使用して Material デザインを適用した Android/iOS 向けのサンプルアプリケーションです。
 
 ## Xamarin.Forms Visual とは何か？
 
@@ -117,6 +119,8 @@ Custom Renderer を自作するか、既存の部品を組み合わせてそれ�
 
 投稿された Pull Requests を見てみると、どのようにして Material デザインを再現したかが分かりますので、参考にしてみてください。私は「皆さん、自力で頑張ってるなあ」という感想を持ちました(Visual Material あまり関係なくない？ともw)。
 
+## その他 Xamarin.Forms 新機能の Tips
+
 ### Visual と Shell
 
 2019年5月29日に Xamarin.Forms 4.0 がリリースされ、Shell という機能が公式に提供されました。
@@ -128,13 +132,51 @@ Shell とは、スマホアプリでよく使用される画面パターンを�
 
 Visual とは直接関係はなく、Shell のソリューションテンプレートでも Visual は使用されていませんが、Shell と Visual を併用すると、「より Material でモダンな」アプリが作りやすいものと思います。例えば、このサンプルアプリの iOS 版はヘッダが白い背景色ままですが、Shell で作ったアプリの iOS 版は、Android 版と同じくヘッダが青い背景色になります。
 
+### Fontアイコンの使用と Image Source Unification
+
+Xamarin.Forms 3.5 で ``FontImageSource`` が導入され、 [FontAwesome](https://fontawesome.com/) や [Material Design Icons](https://materialdesignicons.com/) が利用しやすくなりました。
+Xamarin.Forms 4.0 では、あらゆるコントロールですべての ImageSource が使用できるようになりました。
+例えば ``Button.Image`` プロパティは、これまでは ``FileImageSource`` であったために、``FontImageSource``, ``UriImageSource`` などは使用できませんでしたが、Xamarin.Forms 4.0 からはすべて使用できます。
+
+このサンプルアプリでも、アイコンは Material Design Icons と ``FontImageSource`` を使用しています。
+
+```xaml:
+<ImageButton Grid.Column="1" Grid.Row="1"
+    x:Name="btn"
+    BackgroundColor="#2B78FE" 
+    Padding="10" CornerRadius="25" 
+    WidthRequest="50" HeightRequest="50"  
+    VerticalOptions="Center" HorizontalOptions="Center"
+    Command="{Binding AddCommand}">
+    <ImageButton.Source>
+        <FontImageSource
+            FontFamily="{DynamicResource MaterialFontFamily}"
+            Glyph="{StaticResource plus}" />
+    </ImageButton.Source>                
+</ImageButton>
+```
+
+WebFont(``.ttf``)をプロジェクトへ追加する方法は、
+
+* [Simple way to use icon fonts in Xamarin Forms projects – Trailhead Technology Partners](https://trailheadtechnology.com/simple-way-to-use-icon-fonts-in-xamarin-forms-projects/)
+
+、``FontImageSource`` の使い方については、
+
+* [Using Font Icons in Xamarin.Forms: Goodbye Images, Hello Fonts! - James Montemagno](https://montemagno.com/using-font-icons-in-xamarin-forms-goodbye-images-hello-fonts/)
+
+が、それぞれ詳しいです。このサンプルと合わせてご覧ください。
+
 ## サンプルアプリの設計
 
-ここからは Visual Material に関係のない、ただの GUI アプリケーション設計の話です。興味のない方は読むのをやめて頂いて OK です。
+ここからは Visual Material に関係のない、GUI アプリケーション設計の話です。
 
 このサンプルアプリケーションは MVVM パターンを採用しています。DDD や Clean Archtecture から「Usecase」や「Repository」という概念も採用しています。
 
-プラットフォーム側での固有処理は行っておらず、共通の XamMaterialTodo プロジェクトですべての実装を行っています。
+de:code で発表された @runceel さんによる登壇内容(以下に詳細解説あり)と、大筋では変わらない設計になっているので、参考にしていただければ幸いです。
+
+* [de:code 2019 Xamarin.Forms アプリケーション設計パターン の登壇内容解説 - Microsoft Tech Community](https://techcommunity.microsoft.com/t5/Windows-Dev-AppConsult/de-code-2019-Xamarin-Forms-%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E8%A8%AD%E8%A8%88%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3-%E3%81%AE%E7%99%BB%E5%A3%87%E5%86%85%E5%AE%B9%E8%A7%A3%E8%AA%AC/ba-p/662345)
+
+尚、プラットフォーム側での固有処理は行っておらず、共通の XamMaterialTodo プロジェクトですべての実装を行っています。
 
 XamMaterialTodo プロジェクトのクラス図は以下のようになっています。
 
@@ -205,17 +247,6 @@ UpdatedItem = Observable.CombineLatest(
 ## 参考にしない方がよい点
 
 コピペだけで作ると後で痛い目を見るかも、という点を挙げてみました。
-
-### 画像の表示
-
-画像の表示では、 
-
-```xml:
-<ImageButton Grid.Column="1" Grid.Row="1"
-    Source="https://raw.githubusercontent.com/amay077/XamMaterialTodo/master/img/baseline_add_white_48dp.png"
-```
-
-のように URL を直接指定していますが、動的に変化する画像でなければ、アプリ内にリソースとして持つべきです。
 
 ### 画面遷移
 
