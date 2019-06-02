@@ -12,7 +12,7 @@
     
     <ContentPage.Resources>
         <ResourceDictionary>
-            <vc:DoneConverter x:Key="doneConv" />
+            <vc:InverseConverter x:Key="invConv" />
             <vc:PriorityLabelConverter x:Key="prLabelConv" />
             <vc:PriorityColorConverter x:Key="prColorConv" />
             <vc:DueDateConverter x:Key="dueDateConv" />
@@ -55,8 +55,24 @@
                             <FlexLayout Direction="Row" JustifyContent="SpaceBetween"
                                 Padding="10,0"
                                 HorizontalOptions="FillAndExpand">
+                                
                                 <Image FlexLayout.AlignSelf="Center" WidthRequest="30" HeightRequest="30" Margin="0,0,5,0"
-                                       Source="{Binding IsDone, Converter={StaticResource doneConv}}" />
+                                       IsVisible="{Binding IsDone}">
+                                    <ImageButton.Source>
+                                        <FontImageSource
+                                            FontFamily="{DynamicResource MaterialFontFamily}"
+                                            Glyph="{StaticResource checkbox-marked-outline}" Color="Black" />
+                                    </ImageButton.Source>                
+                                </Image>
+                                <Image FlexLayout.AlignSelf="Center" WidthRequest="30" HeightRequest="30" Margin="0,0,5,0" 
+                                       IsVisible="{Binding IsDone, Converter={StaticResource invConv}}">
+                                    <ImageButton.Source>
+                                        <FontImageSource
+                                            FontFamily="{DynamicResource MaterialFontFamily}"
+                                            Glyph="{StaticResource checkbox-blank-outline}" Color="Black" />
+                                    </ImageButton.Source>                
+                                </Image>
+                                
                                 <Label FlexLayout.AlignSelf="Center" FlexLayout.Grow="1" Text="{Binding Title}" Margin="0,0,5,0"/>
                                 <Label FlexLayout.AlignSelf="Center" Text="{Binding DueDate, Converter={StaticResource dueDateConv}}" Margin="0,0,5,0" />
                                 
@@ -77,12 +93,18 @@
             </ListView>
             
             <ImageButton Grid.Column="1" Grid.Row="1"
-                Source="https://raw.githubusercontent.com/amay077/XamMaterialTodo/master/img/baseline_add_white_48dp.png"
+                x:Name="btn"
                 BackgroundColor="#2B78FE" 
                 Padding="10" CornerRadius="25" 
                 WidthRequest="50" HeightRequest="50"  
                 VerticalOptions="Center" HorizontalOptions="Center"
-                Command="{Binding AddCommand}"/>
+                Command="{Binding AddCommand}">
+                <ImageButton.Source>
+                    <FontImageSource
+                        FontFamily="{DynamicResource MaterialFontFamily}"
+                        Glyph="{StaticResource plus}" />
+                </ImageButton.Source>                
+            </ImageButton>
         
         </Grid>
     </ContentPage.Content>

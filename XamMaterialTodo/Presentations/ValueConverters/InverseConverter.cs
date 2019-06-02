@@ -12,7 +12,7 @@ namespace XamMaterialTodo.Presentations.ValueConverters
             {
                 return !(bool)value;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

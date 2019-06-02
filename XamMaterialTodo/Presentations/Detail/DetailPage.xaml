@@ -36,8 +36,14 @@
                        BackgroundColor="White" Placeholder="Title" Text="{Binding Title.Value, Mode=TwoWay}" />
                 
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween" HeightRequest="40" Margin="0,0,5,0">
-                    <Image Margin="10,0" FlexLayout.AlignSelf="Center" WidthRequest="30" HeightRequest="30" 
-                           Source="https://raw.githubusercontent.com/amay077/XamMaterialTodo/master/img/baseline_date_range_black_48dp.png" />
+                    <Image Margin="10,0" FlexLayout.AlignSelf="Center" WidthRequest="30" HeightRequest="30">
+                        <Image.Source>
+                            <FontImageSource
+                                FontFamily="{DynamicResource MaterialFontFamily}"
+                                Glyph="{StaticResource calendar-month}" Color="Black" />
+                        </Image.Source>                
+                    </Image>
+                    
                     <AbsoluteLayout FlexLayout.AlignSelf="Center">
                     <DatePicker Visual="Default" 
                                 IsVisible="{Binding HasDueDate.Value}"
@@ -53,15 +59,25 @@
                     <BoxView FlexLayout.Grow="1" />
                     <ImageButton FlexLayout.AlignSelf="Center" BackgroundColor="Transparent" WidthRequest="20" HeightRequest="20" 
                                  IsVisible="{Binding HasDueDate.Value}"
-                                 Source="https://raw.githubusercontent.com/amay077/XamMaterialTodo/master/img/baseline_close_black_48dp.png" 
-                                 Command="{Binding DeleteDueDateCommand}"/>
+                                 Command="{Binding DeleteDueDateCommand}">
+                        <Image.Source>
+                            <FontImageSource
+                                FontFamily="{DynamicResource MaterialFontFamily}"
+                                Glyph="{StaticResource close}" Color="Gray" />
+                        </Image.Source>                                        
+                    </ImageButton>
                 </FlexLayout>
                 
                 <BoxView Margin="5,0" HeightRequest="0.5" BackgroundColor="Gray" />
                 
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween" HeightRequest="40" Margin="0,0,5,0" >
-                    <Image Margin="10,0" FlexLayout.AlignSelf="Center" WidthRequest="30" HeightRequest="30" 
-                           Source="https://raw.githubusercontent.com/amay077/XamMaterialTodo/master/img/outline_swap_vert_black_48dp.png" />
+                    <Image Margin="10,0" FlexLayout.AlignSelf="Center" WidthRequest="30" HeightRequest="30">
+                        <Image.Source>
+                            <FontImageSource
+                                FontFamily="{DynamicResource MaterialFontFamily}"
+                                Glyph="{StaticResource swap-vertical}" Color="Black" />
+                        </Image.Source>                                        
+                    </Image>
                     <Label FlexLayout.AlignSelf="Center" Text="Low" FontSize="Small" Margin="10,0,0,0" />
                     <Slider Margin="5,0" FlexLayout.AlignSelf="Center" FlexLayout.Grow="1" Minimum="0" Maximum="3" Value="{Binding Priority.Value}"  HorizontalOptions="FillAndExpand" />    
                     <Label FlexLayout.AlignSelf="Center" Text="High" FontSize="Small" />
@@ -79,13 +95,18 @@
             </StackLayout>
             
             <ImageButton Grid.Column="1" Grid.Row="1"
-                Source="https://raw.githubusercontent.com/amay077/XamMaterialTodo/master/img/sharp_done_white_48dp.png"
                 BackgroundColor="#2B78FE" 
                 Padding="10" CornerRadius="25" 
                 WidthRequest="50" HeightRequest="50"
                 VerticalOptions="Center" HorizontalOptions="Center"
                 IsVisible="{Binding IsVisibleDone.Value}"
-                Command="{Binding DoneCommand}"/>
+                Command="{Binding DoneCommand}">
+                <ImageButton.Source>
+                    <FontImageSource
+                        FontFamily="{DynamicResource MaterialFontFamily}"
+                        Glyph="{StaticResource check}" />
+                </ImageButton.Source>                                
+            </ImageButton>
                 
         </Grid>
     </ContentPage.Content>

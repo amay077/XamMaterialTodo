@@ -140,4 +140,7 @@
       <Name>XamMaterialTodo</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="materialdesignicons-webfont.ttf" />
+  </ItemGroup>
 </Project>

@@ -1,5 +1,19 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="XamMaterialTodo.App">
     <Application.Resources>
+        
+        <OnPlatform x:Key="MaterialFontFamily" x:TypeArguments="x:String">
+            <On Platform="iOS" Value="Material Design Icons" />
+            <On Platform="Android" Value="materialdesignicons-webfont.ttf#Material Design Icons" />
+        </OnPlatform>
+        
+        <x:String x:Key="plus">&#xF415;</x:String>
+        <x:String x:Key="check">&#xF12C;</x:String>
+        <x:String x:Key="checkbox-blank-outline">&#xF131;</x:String>
+        <x:String x:Key="checkbox-marked-outline">&#xF135;</x:String>
+        <x:String x:Key="close">&#xF156;</x:String>
+        <x:String x:Key="calendar-month">&#xFDFA;</x:String>
+        <x:String x:Key="swap-vertical">&#xF4E2;</x:String>
+        
     </Application.Resources>
 </Application>
