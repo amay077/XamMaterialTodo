@@ -19,7 +19,7 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
     <PackageReference Include="LiveXAML" Version="2.1.72" />
     <PackageReference Include="ReactiveProperty" Version="5.4.0" />
-    <PackageReference Include="LiteDB" Version="4.1.4" />
+    <PackageReference Include="LiteDB" Version="5.0.13" />
     <PackageReference Include="Xamarin.Forms.Visual.Material" Version="4.0.0.425677" />
   </ItemGroup>
   <ItemGroup>
